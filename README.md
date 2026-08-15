@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-	<img alt="Minecraft: Bedrock Edition 1.26.40" src="https://img.shields.io/badge/minecraft-bedrock%201.26.40-44b528">
+	<img alt="Minecraft: Bedrock Edition 1.26.44" src="https://img.shields.io/badge/minecraft-bedrock%201.26.44-44b528">
 	<img alt="Protocol 2168" src="https://img.shields.io/badge/protocol-2168-1f6feb">
 	<img alt="PHP 8.1+ 64-bit" src="https://img.shields.io/badge/php-8.1%2B%2064--bit-777bb4?logo=php&logoColor=white">
 	<img alt="Plugin API 5.x" src="https://img.shields.io/badge/plugin%20API-5.x-8957e5">
@@ -30,11 +30,15 @@ Drop the `.phar` in and start it.
 
 | | |
 |---|---|
-| **Minecraft: Bedrock** | 1.26.40 |
+| **Minecraft: Bedrock** | 1.26.44 |
 | **Network protocol** | 2168 |
-| **Engine base** | PocketMine-MP 5.44.0 |
+| **Engine base** | PocketMine-MP 5.44.2 |
 | **Plugin API** | 5.x — existing PMMP 5 plugins work unchanged |
 | **PHP** | 8.1 or newer, 64-bit |
+
+> **Players must be on Minecraft 1.26.44.** Bedrock clients only connect to a server built for their own
+> version, so anyone still on 1.26.40 or older will see *outdated client* until they update. Keep the
+> `.phar` current and your players will always be able to get in on release day.
 
 ---
 
@@ -63,6 +67,17 @@ php NovaMine.phar
 
 The first launch writes `server.properties`, `pocketmine.yml` and a `plugins/` folder next to the `.phar`,
 then generates a world. Stop the server cleanly at any time with `stop` in the console.
+
+---
+
+## Updating
+
+When a new Bedrock version ships, replace `NovaMine.phar` with the latest one from here — that file *is*
+the server. Stop the server, swap the `.phar`, start it again. Your worlds, configs and plugins are all
+stored beside it and are left untouched, so nothing else needs changing.
+
+Keep a copy of the old `.phar` until you've confirmed players can join; rolling back is just swapping it
+back.
 
 ---
 
