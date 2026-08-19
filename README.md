@@ -44,12 +44,7 @@ Drop the `.phar` in and start it.
 
 ## What's new
 
-**Performance.** This build is tuned for busy servers — the hot paths that dominate a
-tick (entity movement, network) do less work per tick than the previous release, so the
-same hardware holds a higher TPS with more players online. Nothing to configure: swap
-the `.phar` and you get it.
-
-**Better `/status`.** The status output now reports **CPU load** alongside TPS and
+**CPU load in `/status`.** The status output now reports **CPU load** alongside TPS and
 memory — both since boot and since the previous `/status`, and as a share of one core
 as well as of the whole machine:
 
@@ -64,6 +59,12 @@ window between the two commands instead of averaging away a spike across your wh
 uptime. It covers the entire process — the main thread, the network thread and the
 async workers — so it is real OS CPU time, not the tick-usage percentage already shown
 next to TPS.
+
+Worth knowing what it tells you: PocketMine ticks the world on a **single thread**, so
+"100% of one core" is the ceiling for game logic no matter how many cores the box has.
+If that number is pinned while the whole-machine share stays low, more cores will not
+help — the fix is less work per tick (fewer loaded worlds, fewer ticking entities), not
+bigger hardware.
 
 ---
 
