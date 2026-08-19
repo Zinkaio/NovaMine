@@ -72,27 +72,73 @@ bigger hardware.
 
 **Windows**
 
-1. Download `NovaMine.phar` and `start.cmd` into an empty folder.
-2. Put a 64-bit PHP 8.1+ build in `bin/php/` (see [Requirements](#requirements)).
-3. Run `start.cmd`, type `run` at the prompt, and press Enter.
+1. Download `NovaMine.phar`, `start.cmd` and `setup.ps1` into an empty folder.
+2. Run `start.cmd`, type `run`, press Enter.
+
+**Linux / macOS**
+
+1. Download `NovaMine.phar` and `start.sh` into an empty folder.
+2. `chmod +x start.sh && ./start.sh`, type `run`, press Enter.
+
+That's the whole setup. **You don't need to install PHP yourself** — on first launch the
+starter downloads the PHP build PocketMine-MP uses, drops it in `bin/php/`, and tunes it
+(see [First-run setup](#first-run-setup)). Later launches skip all of it and start
+immediately.
 
 ```
 your-server/
 ├── NovaMine.phar
-├── start.cmd
-└── bin/
-    └── php/
-        └── php.exe
-```
-
-**Linux / macOS**
-
-```bash
-php NovaMine.phar
+├── start.cmd + setup.ps1     (Windows)
+├── start.sh                  (Linux / macOS)
+└── bin/php/                  ← created for you on first run
 ```
 
 The first launch writes `server.properties`, `pocketmine.yml` and a `plugins/` folder next to the `.phar`,
 then generates a world. Stop the server cleanly at any time with `stop` in the console.
+
+---
+
+## First-run setup
+
+The starter does two things once, then never again:
+
+**Installs PHP.** Grabs the official
+[pmmp/PHP-Binaries](https://github.com/pmmp/PHP-Binaries/releases) build for your
+platform — Windows x64, Linux x86_64, macOS Intel or Apple Silicon — and unpacks it to
+`bin/php/`. Already have a PHP there? It's left alone.
+
+**Turns on PHP's JIT compiler.** The prebuilt PHP ships an OPcache compiled *without*
+JIT, so the `opcache.jit` settings don't exist and setting them by hand does nothing.
+On Windows the starter replaces that OPcache with the official PHP build of the **same
+version and ABI**, which does include JIT, and switches it on. Measured on a benchmark
+shaped like the server's hot path — vector maths, squared length, AABB overlap:
+
+| | before | after | |
+|---|---|---|---|
+| single thread | 0.507 s | 0.168 s | **3.0×** |
+| 8 concurrent worker threads | 0.119 s | 0.064 s | **1.9×** |
+
+Real ticking does more allocation and hashing than a tight maths loop, so treat those as
+the ceiling rather than the gain to expect. On Linux/macOS the starter enables JIT when
+your PHP build supports it and quietly skips it when it doesn't.
+
+It is careful about it:
+
+- A PHP extension must match the interpreter's ABI **exactly** — version, thread safety,
+  compiler — or the process crashes on startup. The ABI is compared byte for byte and
+  anything that doesn't match is refused.
+- Your original OPcache is kept as `php_opcache.dll.nojit-backup`.
+- Setup failures (no network, unavailable download) print a warning and the server starts
+  normally anyway. It will never leave you unable to run.
+
+**To undo:**
+
+```powershell
+powershell -ExecutionPolicy Bypass -File setup.ps1 -Revert   # Windows
+```
+```bash
+./start.sh --revert-jit                                      # Linux / macOS
+```
 
 ---
 
@@ -117,9 +163,10 @@ leveldb  mbstring  morton  openssl  pcre  phar  pmmpthread
 reflection  simplexml  sockets  spl  yaml  zip  zlib
 ```
 
-A stock PHP install won't have `pmmpthread`, `leveldb`, `chunkutils2` or `morton`. The easy route is a
-prebuilt bundle from [pmmp/PHP-Binaries](https://github.com/pmmp/PHP-Binaries/releases) (the `pm5-latest`
-release) — unpack it to `bin/php/` and the start scripts pick it up automatically.
+A stock PHP install won't have `pmmpthread`, `leveldb`, `chunkutils2` or `morton` — which is why the
+starter fetches a prebuilt bundle from [pmmp/PHP-Binaries](https://github.com/pmmp/PHP-Binaries/releases)
+(`pm5-latest`) for you on first run. If you'd rather do it by hand, unpack that release so `bin/php/` sits
+next to the `.phar` and the starter will use it as-is.
 
 ---
 

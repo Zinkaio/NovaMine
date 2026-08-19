@@ -2,3 +2,7 @@
 # Without this, cloning on a machine with core.autocrlf=true rewrites LF to CRLF inside
 # the archive, which breaks the signature and ships a server that refuses to start.
 *.phar binary
+
+# start.sh must stay LF. Checked out with CRLF, Linux and macOS fail the moment it runs
+# with "bad interpreter: /usr/bin/env bash^M".
+*.sh text eol=lf

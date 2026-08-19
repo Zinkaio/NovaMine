@@ -2,6 +2,14 @@
 TITLE NovaMine by NovaPE - server software for Minecraft: Bedrock Edition
 cd /d %~dp0
 
+REM First run installs PHP into bin\php if it is missing and enables PHP's JIT.
+REM Afterwards a marker file makes this a no-op, so startup stays instant.
+REM Nothing here can stop the server starting - setup failures only print a warning.
+REM Undo the JIT change with:  powershell -ExecutionPolicy Bypass -File setup.ps1 -Revert
+if exist setup.ps1 (
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0setup.ps1" -ServerRoot "%~dp0."
+)
+
 :begin
 echo.
 echo Type "run" to start the server, or "exit" to quit.
