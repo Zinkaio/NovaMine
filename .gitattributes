@@ -1,0 +1,4 @@
+# NovaMine.phar is a binary archive carrying a SHA-1 signature over its own bytes.
+# Without this, cloning on a machine with core.autocrlf=true rewrites LF to CRLF inside
+# the archive, which breaks the signature and ships a server that refuses to start.
+*.phar binary

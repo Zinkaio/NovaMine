@@ -42,6 +42,31 @@ Drop the `.phar` in and start it.
 
 ---
 
+## What's new
+
+**Performance.** This build is tuned for busy servers — the hot paths that dominate a
+tick (entity movement, network) do less work per tick than the previous release, so the
+same hardware holds a higher TPS with more players online. Nothing to configure: swap
+the `.phar` and you get it.
+
+**Better `/status`.** The status output now reports **CPU load** alongside TPS and
+memory — both since boot and since the previous `/status`, and as a share of one core
+as well as of the whole machine:
+
+```
+Thread count: 4
+CPU load (since boot): 3.2% of one core (0.2% of 16 cores)
+CPU load (since last /status): 41.7% of one core (2.6% of 16 cores)
+```
+
+The since-last-call figure is the useful one while diagnosing lag: it measures the
+window between the two commands instead of averaging away a spike across your whole
+uptime. It covers the entire process — the main thread, the network thread and the
+async workers — so it is real OS CPU time, not the tick-usage percentage already shown
+next to TPS.
+
+---
+
 ## Quick start
 
 **Windows**
