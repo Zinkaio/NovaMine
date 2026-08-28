@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-	<img alt="Minecraft: Bedrock Edition 1.26.44" src="https://img.shields.io/badge/minecraft-bedrock%201.26.44-44b528">
-	<img alt="Protocol 2168" src="https://img.shields.io/badge/protocol-2168-1f6feb">
+	<img alt="Minecraft: Bedrock Edition 1.26.45" src="https://img.shields.io/badge/minecraft-bedrock%201.26.45-44b528">
+	<img alt="Protocol 2169" src="https://img.shields.io/badge/protocol-2169-1f6feb">
 	<img alt="PHP 8.1+ 64-bit" src="https://img.shields.io/badge/php-8.1%2B%2064--bit-777bb4?logo=php&logoColor=white">
 	<img alt="Plugin API 5.x" src="https://img.shields.io/badge/plugin%20API-5.x-8957e5">
 	<img alt="Licence LGPL-3.0" src="https://img.shields.io/badge/licence-LGPL--3.0-blue">
@@ -30,19 +30,29 @@ Drop the `.phar` in and start it.
 
 | | |
 |---|---|
-| **Minecraft: Bedrock** | 1.26.44 |
-| **Network protocol** | 2168 |
+| **Minecraft: Bedrock** | 1.26.45 |
+| **Network protocol** | 2169 |
 | **Engine base** | PocketMine-MP 5.44.2 |
 | **Plugin API** | 5.x — existing PMMP 5 plugins work unchanged |
 | **PHP** | 8.1 or newer, 64-bit |
 
-> **Players must be on Minecraft 1.26.44.** Bedrock clients only connect to a server built for their own
-> version, so anyone still on 1.26.40 or older will see *outdated client* until they update. Keep the
+> **Players must be on Minecraft 1.26.45.** Bedrock clients only connect to a server built for their own
+> version, so anyone still on 1.26.44 or older will see *outdated client* until they update. Keep the
 > `.phar` current and your players will always be able to get in on release day.
 
 ---
 
 ## What's new
+
+**Minecraft 1.26.45 (protocol 2169).** Clients on 1.26.45 connect again; the previous build spoke
+2168 and turned them away with *Incompatible protocol version*.
+
+This one was a **code-only** bump — the Bedrock block palette and item registry are byte-identical to
+1.26.44, so worlds and custom blocks carry over untouched. The protocol changes are small and
+self-contained: `SetScorePacket` drops the old empty-string workaround, `MolangItemDescriptor` reads
+its version as a signed short, and the `PersonaSkinPiece` / `SkinAnimation` enums shift by one for a
+new "unknown" entry. Nothing in the plugin API moved, so **existing PMMP 5 plugins keep working with
+no changes**.
 
 **CPU load in `/status`.** The status output now reports **CPU load** alongside TPS and
 memory — both since boot and since the previous `/status`, and as a share of one core
