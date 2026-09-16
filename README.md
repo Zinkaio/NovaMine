@@ -44,14 +44,13 @@ Drop the `.phar` in and start it.
 
 ## What's new
 
-**Minecraft 1.26.50 / 1.26.51 (protocol 2193).** NovaMine now uses the current 1.26.50 protocol and
-game-data changes referenced from PowerNukkitX, and has been verified with a 1.26.51 Bedrock client.
+**Minecraft 1.26.50 / 1.26.51 (protocol 2193).** NovaMine now supports the current 1.26.50 protocol
+and has been verified with a 1.26.51 Bedrock client.
 
 This update includes the new 1.26.50 block-state data, data-driven block definitions and the Jigsaw
-structure data packet required during the pre-spawn sequence. `StartGame` now sends the same vanilla
-block-definition data used by PowerNukkitX before custom block definitions are appended, preventing the
-silent client disconnect that occurred immediately after login on 1.26.51. The plugin API remains PMMP
-5.x, so existing PMMP 5 plugins continue to work unchanged.
+structure data packet required during the pre-spawn sequence. The login flow has also been updated to
+prevent the silent client disconnect that occurred immediately after login on 1.26.51. The plugin API
+remains PMMP 5.x, so existing PMMP 5 plugins continue to work unchanged.
 
 **CPU load in `/status`.** The status output now reports **CPU load** alongside TPS and
 memory — both since boot and since the previous `/status`, and as a share of one core
